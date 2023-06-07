@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var isDarkMode = false
     @State private var isAirplainModeOn: Bool = false
     
     var body: some View {
@@ -48,7 +49,7 @@ struct HomeView: View {
                               cellTitle: "Wi-Fi",
                               subTitle: "KT_GIGA_2G_Wave2"
                     ) {
-                        Text("Wi-Fi 화면")
+                        WifiView()
                     }
                     
                     navigationLinkCell(imageName: "",
@@ -117,10 +118,40 @@ struct HomeView: View {
                         Text("Screen Time 화면")
                     }
                 }
+                
+                Section {
+                    navigationLinkCell(imageName: "gear",
+                                       iconBackColor: .gray,
+                                       iconColor: .white,
+                                       cellTitle: "General",
+                                       subTitle: nil
+                    ) {
+                        Text("General 화면")
+                    }
+                    
+                    navigationLinkCell(imageName: "switch.2",
+                                       iconBackColor: .gray,
+                                       iconColor: .white,
+                                       cellTitle: "Control Center",
+                                       subTitle: nil
+                    ) {
+                        Text("Control Center 화면")
+                    }
+                    
+                    navigationLinkCell(imageName: "textformat.size",
+                                       iconBackColor: .blue,
+                                       iconColor: .white,
+                                       cellTitle: "Display & Brightness",
+                                       subTitle: nil
+                    ) {
+                        DisplayBrightnessView(isDarkMode: $isDarkMode)
+                    }
+                }
             }
             .navigationTitle(Text("Settings"))
         }
     }
+    
     
     @ViewBuilder
     private func profilCell() -> some View {
