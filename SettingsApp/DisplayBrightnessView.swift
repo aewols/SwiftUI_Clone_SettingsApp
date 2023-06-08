@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct DisplayBrightnessView: View {
     @State private var isAutomatic: Bool = false
@@ -13,8 +14,7 @@ struct DisplayBrightnessView: View {
     @State private var isTrueTone: Bool = false
     @State private var isRaiseToWake: Bool = false
     
-    @State private var brightness = 50.0
-    @State private var isEditing = false
+    @Binding var brightness: CGFloat
     
     @Environment(\.colorScheme) var colorSchme
     @Binding var isDarkMode: Bool
@@ -31,6 +31,7 @@ struct DisplayBrightnessView: View {
                         ButtonContent(isSelected: !isDarkMode, imageName: "light", text: "Light")
                     }
                     .buttonStyle(BorderlessButtonStyle())
+                    
                     
                     Button {
                         isDarkMode = true
@@ -63,23 +64,27 @@ struct DisplayBrightnessView: View {
             Section(header: Text("BRIGHTNESS"), footer: Text("Automatically adapt iPhone display based on ambient lighting conditions to make colors appear consistent in different environments")) {
                 
                 Slider(
-                        value: $brightness,
-                        in: 0...100,
-                        step: 5
-                    ) {
-                        Text("Speed")
-                    } minimumValueLabel: {
-                        Image(systemName: "sun.min.fill")
-                            .foregroundColor(.gray)
-                    } maximumValueLabel: {
-                        Image(systemName: "sun.max.fill")
-                            .foregroundColor(.gray)
-                    } onEditingChanged: { editing in
-                        isEditing = editing
-                    }
+                    value: Binding<CGFloat>(
+                        get: {
+                            self.brightness
+                        }, set: { newValue in
+                            self.brightness = newValue
+                            UIScreen.main.brightness = newValue
+                        }
+                    ),
+                    in: 0...1
+                ) {
+                    Text("Speed")
+                } minimumValueLabel: {
+                    Image(systemName: "sun.min.fill")
+                        .foregroundColor(.gray)
+                } maximumValueLabel: {
+                    Image(systemName: "sun.max.fill")
+                        .foregroundColor(.gray)
+                }
                 
                 Toggle(isOn: $isTrueTone, label: {
-                    Text("Bold Text")
+                    Text("True Tone")
                 })
             }
             

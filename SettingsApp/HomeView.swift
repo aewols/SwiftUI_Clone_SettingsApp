@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct HomeView: View {
+    
     @State private var isDarkMode = false
     @State private var isAirplainModeOn: Bool = false
+    
+    @State private var brightness: CGFloat = 0.5 {
+        didSet {
+            UIScreen.main.brightness = brightness
+        }
+    }
     
     var body: some View {
         
@@ -144,7 +151,7 @@ struct HomeView: View {
                                        cellTitle: "Display & Brightness",
                                        subTitle: nil
                     ) {
-                        DisplayBrightnessView(isDarkMode: $isDarkMode)
+                        DisplayBrightnessView(brightness: $brightness, isDarkMode: $isDarkMode)
                     }
                 }
             }
